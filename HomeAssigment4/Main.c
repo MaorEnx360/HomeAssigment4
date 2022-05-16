@@ -36,6 +36,8 @@ Student* readFromBinFile(const char* fileName);
 
 int main()
 {
+	char* sentn =  "Hi";
+	int k = countPipes(sentn, -8);
 	//Part A
 	int* coursesPerStudent = NULL;
 	int numberOfStudents = 0;
@@ -51,7 +53,6 @@ int main()
 
 	//add code to free all arrays of struct Student
 
-
 	/*_CrtDumpMemoryLeaks();*/ //uncomment this block to check for heap memory allocation leaks.
 	// Read https://docs.microsoft.com/en-us/visualstudio/debugger/finding-memory-leaks-using-the-crt-library?view=vs-2019
 
@@ -65,6 +66,19 @@ void countStudentsAndCourses(const char* fileName, int** coursesPerStudent, int*
 
 int countPipes(const char* lineBuffer, int maxCount)
 {
+	if (lineBuffer == NULL) {
+		return -1;
+	}
+	if (maxCount <= 0) 
+		return 0;
+	int counter = 0;
+	for (int i = 0; i <= maxCount || lineBuffer == '\0'; i++) {
+		if (lineBuffer[i] == '|') {
+			counter++;
+		}
+	}
+	return counter;
+
 	//add code here
 }
 
