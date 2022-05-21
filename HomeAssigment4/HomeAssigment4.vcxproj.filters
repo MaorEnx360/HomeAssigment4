@@ -13,10 +13,23 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ValidationFiles">
+      <UniqueIdentifier>{1c79858d-ead8-4e99-afb4-0dfed57a358f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="studentList.txt">
+      <Filter>ValidationFiles</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="students.bin">
+      <Filter>ValidationFiles</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -21,6 +21,12 @@
   <ItemGroup>
     <ClCompile Include="Main.c" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="studentList.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="students.bin" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{AEC9458A-4DAA-4E83-B33C-D1EFD3CBF1DA}</ProjectGuid>
     <RootNamespace>HomeAssigment4</RootNamespace>
