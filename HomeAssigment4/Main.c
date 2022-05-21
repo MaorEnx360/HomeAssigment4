@@ -39,24 +39,20 @@ Student* transformStudentArray(char*** students, const int* coursesPerStudent, i
 void writeToBinFile(const char* fileName, Student* students, int numberOfStudents);
 Student* readFromBinFile(const char* fileName);
 
+//axuliry functions
+char** removeChar(char* str, int sor, int dest, char* c);
+
 int main()
 {
 	//Part A
-	int coursesPerStudent[1] = {2};
-	int numberOfStudents = 1;
-	int k = SIZEOFSTUDENT(2);
-	//countStudentsAndCourses("studentList.txt", &coursesPerStudent, &numberOfStudents);
-	//char*** students = makeStudentArrayFromFile("studentList.txt", &coursesPerStudent, &numberOfStudents);
-	const char students[1][5][30] = { "Roa", "Madar" , "100","Advanced Topics in C","100"};
-
-	//*students[1] = { "Roa" }, { "Madar" }, { "100" };
-	//*students[2] = { "Roa" }, { "Madar" }, { "100" };
-
-	//{ {{"Roa"},{"Madar"},{"100"},{"Hedva 2"},{"100"}}, {("Maor","Madar","92","Complex equations","87"},{{"student3"},{"C Advanced"},{"75"}} };
-	factorGivenCourse(students, coursesPerStudent, numberOfStudents, "Advanced Topics in C", 5);
-//	printStudentArray(students, coursesPerStudent, numberOfStudents);
+	int* coursesPerStudent = NULL;
+	int numberOfStudents = 0;
+	countStudentsAndCourses("studentList.txt", &coursesPerStudent, &numberOfStudents);
+	char*** students = makeStudentArrayFromFile("studentList.txt", &coursesPerStudent, &numberOfStudents);
+	factorGivenCourse(students, coursesPerStudent, numberOfStudents, "Advanced Topics in C", +5);
+	printStudentArray(students, coursesPerStudent, numberOfStudents);
 	//studentsToFile(students, coursesPerStudent, numberOfStudents); //this frees all memory. Part B fails if this line runs. uncomment for testing (and comment out Part B)
-	
+
 	//Part B
 	Student* transformedStudents = transformStudentArray(students, coursesPerStudent, numberOfStudents);
 	writeToBinFile("students.bin", transformedStudents, numberOfStudents);
@@ -110,10 +106,8 @@ int countPipes(const char* lineBuffer, int maxCount)
 
 char*** makeStudentArrayFromFile(const char* fileName, int** coursesPerStudent, int* numberOfStudents)
 {
-	/*
-	char line[LINE];
-	
 
+	char line[LINE];
 	FILE* STUDFIL = fopen(fileName, "r");
 	countStudentsAndCourses(fileName, coursesPerStudent, numberOfStudents);
 	char*** students = (char***)malloc(*numberOfStudents * sizeof(char**));
@@ -121,52 +115,44 @@ char*** makeStudentArrayFromFile(const char* fileName, int** coursesPerStudent, 
 		int size = SIZEOFSTUDENT(*(*coursesPerStudent + i));
 		*(students + i) = (char**)malloc(size * sizeof(char*));
 	}
-	for (int n = 0; n < *numberOfStudents; n++) {
+	for (int n = 0; n < numberOfStudents; n++) {
 		int numOfCour = *(*coursesPerStudent + n);
-		fgets(line, LINE, STUDFIL);
-		char* ptr = strtok(line, "|");
-		char** arr;
-		arr = (char**)malloc(numOfCour * sizeof(char*));
-		for (int i = 0; ptr; i++) {
-			arr[i] = ptr;
-			ptr = strtok(NULL, "|");
+		fgets(line, 1024, STUDFIL);
+		int size = SIZEOFSTUDENT(*(*coursesPerStudent + n));
+		char** lineAfterSplitBars = removeChar(line, numOfCour, size, "|");
+		for (int i = 0; i < *coursesPerStudent[n]; i++) {
+			*(*(students + i)) = lineAfterSplitBars[i];
 		}
-/*
-		char** arr2 = (char**)malloc(numOfCour * 2 * sizeof(char*));
-		for (int i = 0; i < 1 + (numOfCour * 2); i++) {
-			for(int j = 0; arr[j] != '\0' ;j++){
-				if (arr[j] == ',') {
-					j++;
-				arr2[i]
-
-			}*/
-		}
-	
-	
-
-			//add code here
-	
-
-
-void factorGivenCourse(char** const* students, const int* coursesPerStudent, int numberOfStudents, const char* courseName, int factor)
-{
-	if ((factor > 20) || (factor < -20)) {
-		puts("The Factor is not between -20,20");
 	}
-	else {
-		int tmp = 0;
-		for (int i = 0; i < numberOfStudents; i++) {
-			for (int j = 0; j < coursesPerStudent[i]; j++) {
-				if (strcmp(students[i][j][0], courseName)) {
-					tmp = atoi(students[i][j + 1]);
-					tmp += factor;
-					(tmp > 100) ? tmp : 100;
-					students[i][j + 1] = tmp;
+	}
+
+
+
+	//add code here
+
+
+
+	void factorGivenCourse(char** const* students, const int* coursesPerStudent, int numberOfStudents, const char* courseName, int factor)
+	{
+		if (factor > 20 || factor < -20) {
+			puts("The Factor is not between -20,20");
+		}
+		else {
+			int tmp = 0;
+			for (int i = 0; i < numberOfStudents; i++) {
+				for (int j = 0; j < coursesPerStudent[i]; j++) {
+					if (strcmp(students[i][j][0], courseName)) {
+						tmp = atoi(students[i][j + 1]);
+						tmp += factor;
+						(tmp > 100) ? tmp : 100;
+						students[i][j + 1] = tmp;
+					}
 				}
 			}
 		}
 	}
-}
+
+
 //add code here				
 	
 void printStudentArray(const char* const* const* students, const int* coursesPerStudent, int numberOfStudents)
@@ -201,4 +187,15 @@ Student* readFromBinFile(const char* fileName)
 Student* transformStudentArray(char*** students, const int* coursesPerStudent, int numberOfStudents)
 {
 	//add code here
+}
+
+//Auxiliary functions
+char** removeChar(char* str, int sor, int dest,char* c) {
+	char* ptr = strtok(str, c);
+	char** arr = (char**)malloc(dest * sizeof(char*));	
+	for (int i = 0; ptr!=NULL; i++) {
+		arr[i] = ptr;
+		ptr = strtok(NULL, c);
+	}
+	return arr;
 }
