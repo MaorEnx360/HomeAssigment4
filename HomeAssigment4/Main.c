@@ -36,7 +36,7 @@ int countPipes(const char* lineBuffer, int maxCount);
 char*** makeStudentArrayFromFile(const char* fileName, int** coursesPerStudent, int* numberOfStudents);
 void printStudentArray(const char* const* const* students, const int* coursesPerStudent, int numberOfStudents);
 void factorGivenCourse(char** const* students, const int* coursesPerStudent, int numberOfStudents, const char* courseName, int factor);
-//void studentsToFile(char*** students, int* coursesPerStudent, int numberOfStudents);
+void studentsToFile(char*** students, int* coursesPerStudent, int numberOfStudents);
 
 //Part B
 Student* transformStudentArray(char*** students, const int* coursesPerStudent, int numberOfStudents);
@@ -49,11 +49,11 @@ int main()
 	//Part A
 	int* coursesPerStudent = NULL;
 	int numberOfStudents = 0;
-	//countStudentsAndCourses("studentList.txt", &coursesPerStudent, &numberOfStudents);
+//	countStudentsAndCourses("studentList.txt", &coursesPerStudent, &numberOfStudents);
 	char*** students = makeStudentArrayFromFile("studentList.txt", &coursesPerStudent, &numberOfStudents);
 	factorGivenCourse(students, coursesPerStudent, numberOfStudents, "Advanced Topics in C", +5);
 	printStudentArray(students, coursesPerStudent, numberOfStudents);
-//	studentsToFile(students, coursesPerStudent, numberOfStudents); //this frees all memory. Part B fails if this line runs. uncomment for testing (and comment out Part B)
+	studentsToFile(students, coursesPerStudent, numberOfStudents); //this frees all memory. Part B fails if this line runs. uncomment for testing (and comment out Part B)
 
 	//Part B
 	Student* transformedStudents = transformStudentArray(students, coursesPerStudent, numberOfStudents);
@@ -75,6 +75,9 @@ void countStudentsAndCourses(const char* fileName, int** coursesPerStudent, int*
 	char line[100];
 	while (!feof(studentCount)) {
 		fgets(line, 100, studentCount);
+		//if (feof(studentCount)) {
+			//break;
+		//}
 		*numberOfStudents += 1;
 	}
 	rewind(studentCount);
@@ -177,7 +180,7 @@ void printStudentArray(const char* const* const* students, const int* coursesPer
 
 void studentsToFile(char*** students, int* coursesPerStudent, int numberOfStudents)
 {
-	FILE* des = fopen("studentList2.txt", "w");
+	FILE* des = fopen("studentList.txt", "w");
 	for (int n = 0; n < numberOfStudents; n++) {
 		char line[LINE];
 		strcpy(line, students[n][0]);
@@ -195,7 +198,9 @@ void studentsToFile(char*** students, int* coursesPerStudent, int numberOfStuden
 			}
 		}
 		fputs(line, des);
-		fputs("\n", des);
+		if (n != numberOfStudents - 1) {
+			fputs("\n", des);
+		}
 		fflush(des);
 	}
 	for (int n = 0; n < numberOfStudents; n++) {
@@ -246,4 +251,3 @@ Student* transformStudentArray(char*** students, const int* coursesPerStudent, i
 	//add code here
 }
 
-//Auxiliary functions
